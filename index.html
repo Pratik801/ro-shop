@@ -261,10 +261,11 @@
         const businessPhoneNumber = '918010942439'; // Use full country code
 
         const products = [
-            { id: 1, name: 'Basic RO System', description: 'A reliable and efficient RO system perfect for small families. Includes a 7-stage purification process.', price: 7500, image: 'https://placehold.co/400x300/e0e7ff/374151?text=RO+Filter+1' },
-            { id: 2, name: 'Advanced RO System', description: 'Our top-of-the-line model with a mineral cartridge to enrich water and a smart TDS controller.', price: 12000, image: 'https://placehold.co/400x300/d1d5db/374151?text=RO+Filter+2' },
-            { id: 3, name: 'Compact Under-Sink RO', description: 'Saves space and provides the same great purification. Ideal for modern kitchens.', price: 9500, image: 'https://placehold.co/400x300/c7d2fe/374151?text=RO+Filter+3' },
-            { id: 4, name: 'Commercial RO System', description: 'High-capacity system for offices, restaurants, and large homes. Provides pure water for all your needs.', price: 35000, image: 'https://placehold.co/400x300/a5b4fc/374151?text=RO+Filter+4' }
+            // Updated to use the local images from your 'public' folder
+            { id: 1, name: 'Basic RO System', description: 'A reliable and efficient RO system perfect for small families. Includes a 7-stage purification process.', price: 7500, image: 'public/ro_basic.jpg' },
+            { id: 2, name: 'Advanced RO System', description: 'Our top-of-the-line model with a mineral cartridge to enrich water and a smart TDS controller.', price: 12000, image: 'public/ro_advanced.jpg' },
+            { id: 3, name: 'Premium RO System', description: 'Saves space and provides the same great purification. Ideal for modern kitchens.', price: 9500, image: 'public/ro_premium.jpg' },
+            { id: 4, name: 'Commercial RO System', description: 'High-capacity system for offices, restaurants, and large homes. Provides pure water for all your needs.', price: 35000, image: 'public/ro_commercial.jpg' }
         ];
 
         // --- DOM ELEMENTS ---
@@ -375,6 +376,9 @@
         // --- WHATSAPP CHECKOUT ---
         checkoutBtn.addEventListener('click', () => {
             if (cart.length === 0) {
+                // Instead of alert, display a message in a custom modal or element.
+                // For this example, we'll use a simple alert since we don't have a modal UI built.
+                // However, for a real app, a modal is preferred.
                 alert('Your cart is empty.');
                 return;
             }
