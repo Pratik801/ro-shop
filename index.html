@@ -1,86 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RO Filter Shop</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RO Filter Shop</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <div class="bg-primary text-white text-center p-3">
-        <h1>RO Filter Shop</h1>
+<body class="bg-gray-100">
+
+  <!-- Header -->
+  <header class="bg-blue-600 text-white p-4 text-center text-2xl font-bold">
+    RO Filter Shop
+  </header>
+
+  <!-- Product List -->
+  <main class="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="product-list"></main>
+
+  <!-- Cart Section -->
+  <section class="p-4 bg-white shadow mt-6 max-w-4xl mx-auto rounded-lg">
+    <h2 class="text-xl font-bold mb-4">Your Cart</h2>
+    <div id="cart-items" class="space-y-4"></div>
+    <p class="mt-4 font-bold">Total: ₹<span id="cart-total">0</span></p>
+    <button id="checkout-btn" class="bg-green-500 text-white px-4 py-2 mt-4 rounded hover:bg-green-600">
+      Checkout on WhatsApp
+    </button>
+  </section>
+
+<script>
+// Product Data
+const products = [
+  { id: 1, name: 'Basic RO System', price: 7500, image: './public/ro_basic.jpg' },
+  { id: 2, name: 'Advanced RO System', price: 12000, image: './public/ro_advanced.jpg' },
+  { id: 3, name: 'Premium RO System', price: 18500, image: './public/ro_premium.jpg' },
+  { id: 4, name: 'Commercial RO Plant', price: 35000, image: './public/ro_commercial.jpg' }
+];
+
+// Load cart from localStorage
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+function saveCart() {
+  localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+function renderProducts() {
+  const container = document.getElementById('product-list');
+  container.innerHTML = products.map(p => `
+    <div class="bg-white p-4 rounded-lg shadow">
+      <img src="${p.image}" alt="${p.name}" class="w-full h-40 object-cover rounded">
+      <h3 class="text-lg font-bold mt-2">${p.name}</h3>
+      <p class="text-gray-700">₹${p.price}</p>
+      <button onclick="addToCart(${p.id})" class="bg-blue-500 text-white px-3 py-1 rounded mt-2 hover:bg-blue-600">
+        Add to Cart
+      </button>
     </div>
+  `).join('');
+}
 
-    <div class="container my-4">
-        <div class="row g-4">
-
-            <!-- Basic RO -->
-            <div class="col-md-3">
-                <div class="card h-100">
-                    <img src="./public/ro_basic.jpg" class="card-img-top" alt="Basic RO System">
-                    <div class="card-body">
-                        <h5 class="card-title">Basic RO System</h5>
-                        <p class="card-text">₹7500</p>
-                        <button class="btn btn-primary" onclick="addToCart(7500)">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Advanced RO -->
-            <div class="col-md-3">
-                <div class="card h-100">
-                    <img src="./public/ro_advanced.jpg" class="card-img-top" alt="Advanced RO System">
-                    <div class="card-body">
-                        <h5 class="card-title">Advanced RO System</h5>
-                        <p class="card-text">₹12000</p>
-                        <button class="btn btn-primary" onclick="addToCart(12000)">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Premium RO -->
-            <div class="col-md-3">
-                <div class="card h-100">
-                    <img src="./public/ro_premium.jpg" class="card-img-top" alt="Premium RO System">
-                    <div class="card-body">
-                        <h5 class="card-title">Premium RO System</h5>
-                        <p class="card-text">₹18500</p>
-                        <button class="btn btn-primary" onclick="addToCart(18500)">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Commercial RO -->
-            <div class="col-md-3">
-                <div class="card h-100">
-                    <img src="./public/ro_commercial.jpg" class="card-img-top" alt="Commercial RO Plant">
-                    <div class="card-body">
-                        <h5 class="card-title">Commercial RO Plant</h5>
-                        <p class="card-text">₹35000</p>
-                        <button class="btn btn-primary" onclick="addToCart(35000)">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-
-        </div>
+function renderCart() {
+  const container = document.getElementById('cart-items');
+  container.innerHTML = cart.map((item, index) => `
+    <div class="flex justify-between items-center border-b pb-2">
+      <div>
+        <p class="font-bold">${item.name}</p>
+        <p>₹${item.price} x ${item.qty}</p>
+      </div>
+      <div>
+        <button onclick="changeQty(${index}, -1)" class="px-2 bg-gray-300 rounded">-</button>
+        <button onclick="changeQty(${index}, 1)" class="px-2 bg-gray-300 rounded">+</button>
+        <button onclick="removeItem(${index})" class="ml-2 text-red-500">Remove</button>
+      </div>
     </div>
+  `).join('');
+  document.getElementById('cart-total').innerText = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+}
 
-    <div class="container my-4">
-        <div class="card p-3">
-            <h4>Your Cart</h4>
-            <p id="total">Total: ₹0</p>
-            <a id="checkoutBtn" class="btn btn-success" target="_blank">Checkout on WhatsApp</a>
-        </div>
-    </div>
+function addToCart(id) {
+  const product = products.find(p => p.id === id);
+  const item = cart.find(i => i.id === id);
+  if (item) {
+    item.qty++;
+  } else {
+    cart.push({ ...product, qty: 1 });
+  }
+  saveCart();
+  renderCart();
+}
 
-    <script>
-        let total = 0;
-        function addToCart(amount) {
-            total += amount;
-            document.getElementById('total').innerText = `Total: ₹${total}`;
-            document.getElementById('checkoutBtn').href =
-                `https://wa.me/919999999999?text=I%20want%20to%20order%20RO%20systems%20worth%20₹${total}`;
-        }
-    </script>
+function changeQty(index, delta) {
+  cart[index].qty += delta;
+  if (cart[index].qty <= 0) {
+    cart.splice(index, 1);
+  }
+  saveCart();
+  renderCart();
+}
+
+function removeItem(index) {
+  cart.splice(index, 1);
+  saveCart();
+  renderCart();
+}
+
+document.getElementById('checkout-btn').addEventListener('click', () => {
+  const phone = '918010942439';
+  const orderText = cart.map(i => `${i.name} x ${i.qty} = ₹${i.price * i.qty}`).join('%0A');
+  const total = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+  window.open(`https://wa.me/${phone}?text=Order%20Details:%0A${orderText}%0ATotal:%20₹${total}`, '_blank');
+});
+
+renderProducts();
+renderCart();
+</script>
+
 </body>
 </html>
