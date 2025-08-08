@@ -28,10 +28,10 @@
 
 <script>
 const products = [
-  { id: 1, name: 'Basic RO System', price: 7500, image: '/ro_basic.jpg' },
-  { id: 2, name: 'Advanced RO System', price: 12000, image: '/ro_advanced.jpg' },
-  { id: 3, name: 'Premium RO System', price: 18500, image: '/ro_premium.jpg' },
-  { id: 4, name: 'Commercial RO Plant', price: 35000, image: '/ro_commercial.jpg' }
+  { id: 1, name: 'Basic RO System', price: 7500, image: 'ro_basic.jpg' },
+  { id: 2, name: 'Advanced RO System', price: 12000, image: 'ro_advanced.jpg' },
+  { id: 3, name: 'Premium RO System', price: 18500, image: 'ro_premium.jpg' },
+  { id: 4, name: 'Commercial RO Plant', price: 35000, image: 'ro_commercial.jpg' }
 ];
 
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -44,7 +44,7 @@ function renderProducts() {
   const container = document.getElementById('product-list');
   container.innerHTML = products.map(p => `
     <div class="bg-white p-4 rounded-lg shadow">
-      <img src="${p.image}" alt="${p.name}" class="w-full h-40 object-cover rounded">
+      <img src="${p.image}" alt="${p.name}" class="w-full h-40 object-cover rounded" onerror="this.src='https://via.placeholder.com/300x200?text=Image+Not+Found'">
       <h3 class="text-lg font-bold mt-2">${p.name}</h3>
       <p class="text-gray-700">₹${p.price}</p>
       <button onclick="addToCart(${p.id})" class="bg-blue-500 text-white px-3 py-1 rounded mt-2 hover:bg-blue-600">
